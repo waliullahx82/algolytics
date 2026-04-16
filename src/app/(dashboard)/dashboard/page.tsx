@@ -27,6 +27,18 @@ function getTimeAgo(date: Date): string {
   return `${Math.floor(hours / 24)}d ago`;
 }
 
+function formatStatValue(value: unknown): string {
+  if (typeof value === 'number' && Number.isFinite(value)) {
+    return value.toLocaleString();
+  }
+
+  if (typeof value === 'string' && value.trim()) {
+    return value;
+  }
+
+  return 'N/A';
+}
+
 export default function DashboardPage() {
   const { problems, stats, loading, syncing, platforms, goals } = useSync();
 
@@ -273,10 +285,18 @@ export default function DashboardPage() {
                   <span className="text-xs font-bold text-[#ff716c] font-headline uppercase tracking-wider">Codeforces</span>
                   <span className="px-1.5 py-0.5 rounded bg-[#ff716c]/10 text-[#ff716c] text-[10px] font-bold">LIVE</span>
                 </div>
+                {(() => {
+                  const codeforcesPlatform = platforms.find((p) => p.name === 'codeforces');
+                  const rating = formatStatValue(codeforcesPlatform?.stats?.rating);
+                  const rank = formatStatValue(codeforcesPlatform?.stats?.rank);
+
+                  return (
                 <span className="mono text-xs text-[#eaeef5]">
-                  {platforms.find(p => p.name === 'codeforces')?.stats?.rating || 'N/A'} 
-                  <span className="text-[#a7abb2] ml-1">({platforms.find(p => p.name === 'codeforces')?.stats?.rank || 'Unranked'})</span>
+                    {rating}
+                    <span className="text-[#a7abb2] ml-1">({rank})</span>
                 </span>
+                  );
+                })()}
               </div>
               <svg className="w-full h-full overflow-visible" viewBox="0 0 400 60" preserveAspectRatio="none">
                 <path d="M0,50 Q50,45 100,48 T200,20 T300,15 T400,5" fill="none" stroke="#ff716c" strokeWidth="2" strokeLinecap="round" />
@@ -297,9 +317,16 @@ export default function DashboardPage() {
                   <span className="text-xs font-bold text-[#81ecff] font-headline uppercase tracking-wider">LeetCode</span>
                   <span className="px-1.5 py-0.5 rounded bg-[#81ecff]/10 text-[#81ecff] text-[10px] font-bold">CONNECTED</span>
                 </div>
+                {(() => {
+                  const leetcodePlatform = platforms.find((p) => p.name === 'leetcode');
+                  const ranking = formatStatValue(leetcodePlatform?.stats?.ranking);
+
+                  return (
                 <span className="mono text-xs text-[#eaeef5]">
-                  Rank: {platforms.find(p => p.name === 'leetcode')?.stats?.ranking?.toLocaleString() || 'N/A'}
+                    Rank: {ranking}
                 </span>
+                  );
+                })()}
               </div>
               <svg className="w-full h-full overflow-visible" viewBox="0 0 400 60" preserveAspectRatio="none">
                 <path d="M0,55 Q50,52 100,30 T200,25 T300,10 T400,2" fill="none" stroke="#81ecff" strokeWidth="2" strokeLinecap="round" />
