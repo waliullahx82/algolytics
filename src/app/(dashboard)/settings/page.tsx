@@ -46,6 +46,18 @@ type LeaderboardProfileSettings = {
   alias: string;
 };
 
+type SettingsItem = {
+  label: string;
+  value: string;
+  danger?: boolean;
+};
+
+type SettingsSection = {
+  title: string;
+  icon: typeof User;
+  items: SettingsItem[];
+};
+
 const DEFAULT_PREFERENCES: UserPreferences = {
   theme: 'dark',
   language: 'English',
@@ -226,7 +238,7 @@ export default function SettingsPage() {
     URL.revokeObjectURL(url);
   };
 
-  const settingsSections = [
+  const settingsSections: SettingsSection[] = [
     {
       title: 'Account',
       icon: User,
