@@ -69,7 +69,7 @@ export default function LandingPage() {
     return (
       <div className="min-h-screen bg-[#0a0f14] flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 bg-gradient-to-br from-[#81ecff] to-[#00e3fd] rounded-xl flex items-center justify-center animate-pulse">
+          <div className="w-12 h-12 rounded-xl flex items-center justify-center animate-pulse" style={{ backgroundImage: 'linear-gradient(135deg, #81ecff 0%, #00e3fd 100%)' }}>
             <Terminal className="w-6 h-6 text-[#003840]" />
           </div>
           <p className="text-[#a7abb2] font-mono text-sm">Loading...</p>
@@ -83,12 +83,12 @@ export default function LandingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0f14]">
+    <div className="min-h-screen bg-[#0a0f14] overflow-x-hidden">
       {/* Header */}
-      <header className="w-full top-0 sticky z-50 bg-[#0a0f14] flex justify-between items-center px-6 lg:px-12 py-4 border-b border-[#43484e]/15">
-        <div className="flex items-center gap-8">
+      <header className="w-full top-0 sticky z-50 bg-[#0a0f14] flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center px-4 sm:px-6 lg:px-12 py-4 border-b border-[#43484e]/15">
+        <div className="flex items-center gap-4 sm:gap-8 flex-wrap">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-gradient-to-br from-[#81ecff] to-[#00e3fd] rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundImage: 'linear-gradient(135deg, #81ecff 0%, #00e3fd 100%)' }}>
               <Terminal className="w-5 h-5 text-[#003840]" />
             </div>
             <span className="text-xl font-black text-[#81ecff] tracking-tighter">
@@ -104,7 +104,7 @@ export default function LandingPage() {
             </a>
           </nav>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto">
           <button
             onClick={() => setShowAuthModal(true)}
             className="flex items-center gap-2 px-4 py-1.5 rounded-lg bg-[#1f262e] text-[#81ecff] font-bold text-sm hover:bg-[#252d35] transition-colors"
@@ -122,9 +122,9 @@ export default function LandingPage() {
 
       <main>
         {/* Hero Section */}
-        <section className="relative min-h-[80vh] flex items-center overflow-hidden px-6 lg:px-12">
+        <section className="relative min-h-[80vh] flex items-center overflow-hidden px-4 sm:px-6 lg:px-12 py-10 sm:py-0">
           <div className="absolute right-[-10%] top-[-10%] w-[60%] h-[120%] bg-[#81ecff]/10 blur-[120px] rounded-full pointer-events-none"></div>
-          <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-12 items-center relative z-10">
+          <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-8 lg:gap-12 items-center relative z-10">
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#1f262e] border border-[#43484e]/20 rounded-full mb-6">
                 <span className="relative flex h-2 w-2">
@@ -136,23 +136,24 @@ export default function LandingPage() {
                 </span>
               </div>
 
-              <h1 className="text-5xl lg:text-7xl font-black tracking-tight mb-6 leading-[1.1]">
+              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black tracking-tight mb-6 leading-[1.05]">
                 Elevate Your <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#81ecff] to-[#00e3fd]">
+                <span className="text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(90deg, #81ecff 0%, #00e3fd 100%)' }}>
                   Competitive
                 </span>{' '}
                 <br />
                 Programming
               </h1>
 
-              <p className="text-[#a7abb2] text-lg lg:text-xl max-w-lg mb-10 leading-relaxed">
+              <p className="text-[#a7abb2] text-base sm:text-lg lg:text-xl max-w-lg mb-8 sm:mb-10 leading-relaxed">
                 The mission control for modern developers. Aggregate LeetCode, Codeforces, and GitHub metrics into one surgical interface. Built for precision.
               </p>
 
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-col sm:flex-row flex-wrap gap-4">
                 <button
                   onClick={() => setShowAuthModal(true)}
-                  className="bg-gradient-to-br from-[#81ecff] to-[#00e3fd] text-[#003840] font-bold px-8 py-4 rounded-lg neon-glow-primary hover:brightness-110 active:scale-95 transition-all flex items-center gap-2"
+                  className="text-[#003840] font-bold px-8 py-4 rounded-lg neon-glow-primary hover:brightness-110 active:scale-95 transition-all flex items-center gap-2"
+                  style={{ backgroundImage: 'linear-gradient(135deg, #81ecff 0%, #00e3fd 100%)' }}
                 >
                   Get Started
                   <ArrowRight className="w-5 h-5" />
@@ -167,7 +168,7 @@ export default function LandingPage() {
               <div className="relative">
                 <div className="absolute -inset-4 bg-[#81ecff]/10 blur-3xl rounded-full"></div>
                 <div className="bg-[#141a20] border border-[#43484e]/20 p-2 rounded-xl overflow-hidden shadow-2xl">
-                  <div className="bg-gradient-to-br from-[#0a0f14] to-[#141a20] rounded-lg p-8 aspect-video flex items-center justify-center">
+                  <div className="rounded-lg p-8 aspect-video flex items-center justify-center" style={{ backgroundImage: 'linear-gradient(135deg, #0a0f14 0%, #141a20 100%)' }}>
                     <div className="text-center space-y-4">
                       <div className="flex justify-center gap-8 text-sm font-mono">
                         <div>
@@ -201,7 +202,7 @@ export default function LandingPage() {
 
         {/* Platform Integrations */}
         <section id="platforms" className="py-12 bg-[#0e1419] border-y border-[#43484e]/10">
-          <div className="max-w-7xl mx-auto px-6">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <p className="text-center text-[#a7abb2] text-sm uppercase tracking-[0.3em] mb-10 font-bold">
               Connected Ecosystems
             </p>
@@ -278,7 +279,7 @@ export default function LandingPage() {
             Join 10,000+ engineers optimizing their growth curve with Algolytics.
           </p>
           <div className="relative inline-block group">
-            <div className="absolute -inset-1 bg-gradient-to-r from-[#81ecff] to-[#c3f400] rounded-lg blur opacity-40 group-hover:opacity-75 transition duration-200"></div>
+            <div className="absolute -inset-1 rounded-lg blur opacity-40 group-hover:opacity-75 transition duration-200" style={{ backgroundImage: 'linear-gradient(90deg, #81ecff 0%, #c3f400 100%)' }}></div>
             <button
               onClick={() => setShowAuthModal(true)}
               className="relative bg-[#141a20] text-[#eaeef5] font-bold px-12 py-5 rounded-lg border border-[#43484e]/30 active:scale-95 transition-all flex items-center gap-3 mx-auto"
@@ -300,7 +301,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
           <div className="flex flex-col items-center md:items-start">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-6 h-6 bg-gradient-to-br from-[#81ecff] to-[#00e3fd] rounded-lg flex items-center justify-center">
+              <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ backgroundImage: 'linear-gradient(135deg, #81ecff 0%, #00e3fd 100%)' }}>
                 <Terminal className="w-4 h-4 text-[#003840]" />
               </div>
               <span className="text-lg font-black text-[#81ecff] tracking-tighter">

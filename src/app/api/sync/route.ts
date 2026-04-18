@@ -11,6 +11,32 @@ interface PlatformInput {
 
 type SyncResult = { success: boolean; synced: number; error: string | null };
 
+function toIsoSafeDate(value: unknown): Date | null {
+  if (!value) return null;
+
+  const parsed = new Date(value as string | number | Date);
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+}
+
+function buildProblemDocId(platform: PlatformName, problem: Record<string, unknown>, index: number): string {
+  const preferred = [
+    problem.id,
+    problem.code,
+    problem.titleSlug,
+    problem.index,
+    problem.title,
+  ].find((value) => typeof value === 'string' || typeof value === 'number');
+
+  const fallbackBase = String(preferred ?? `problem-${index}`);
+  const safeBase = fallbackBase
+    .trim()
+    .replace(/[\\/]/g, '_')
+    .replace(/\s+/g, '_')
+    .slice(0, 200);
+
+  return `${platform}_${safeBase || `problem-${index}`}`;
+}
+
 function stripUndefined<T>(value: T): T {
   if (Array.isArray(value)) {
     return value
@@ -19,6 +45,12 @@ function stripUndefined<T>(value: T): T {
   }
 
   if (value && typeof value === 'object') {
+    const proto = Object.getPrototypeOf(value);
+    const isPlainObject = proto === Object.prototype || proto === null;
+    if (!isPlainObject) {
+      return value;
+    }
+
     const entries = Object.entries(value as Record<string, unknown>)
       .filter(([, v]) => v !== undefined)
       .map(([k, v]) => [k, stripUndefined(v)]);
@@ -87,33 +119,59 @@ export async function POST(request: NextRequest) {
 
           const problemsRef = adminDb.collection('users').doc(userId).collection('problems');
 
-          const problemList = data.solvedProblems || [];
+          const problemList = Array.isArray(data.solvedProblems) ? data.solvedProblems : [];
           let syncedCount = 0;
 
-          for (const problem of problemList.slice(0, 500)) {
-            const normalizedId = String(problem.id || problem.code || problem.titleSlug || problem.index || problem.title || 'unknown');
-            const problemId = `${name}_${normalizedId}`;
-            const solvedAtRaw = problem.solvedAt || problem.timestamp;
-            const parsedSolvedAt = solvedAtRaw ? new Date(solvedAtRaw) : null;
-            const solvedAt = parsedSolvedAt && !Number.isNaN(parsedSolvedAt.getTime()) ? parsedSolvedAt : new Date();
-            const title = problem.title || problem.name || problem.problem?.name || problem.code || normalizedId;
+          for (const [index, rawProblem] of problemList.slice(0, 500).entries()) {
+            const problem = (rawProblem && typeof rawProblem === 'object')
+              ? (rawProblem as Record<string, unknown>)
+              : {};
 
-            const existingDoc = await problemsRef.doc(problemId).get();
+            try {
+              const problemId = buildProblemDocId(name, problem, index);
+              const title = String(
+                problem.title ||
+                problem.name ||
+                (typeof problem.problem === 'object' && problem.problem !== null
+                  ? (problem.problem as Record<string, unknown>).name
+                  : '') ||
+                problem.code ||
+                problemId
+              );
 
-            if (!existingDoc.exists) {
-              await problemsRef.doc(problemId).set(stripUndefined({
+              const solvedAt = toIsoSafeDate(problem.solvedAt || problem.timestamp);
+              const docRef = problemsRef.doc(problemId);
+              const existingDoc = await docRef.get();
+              const existingSolvedAtRaw = existingDoc.exists
+                ? (existingDoc.data()?.solvedAt as unknown)
+                : undefined;
+              const existingSolvedAt = toIsoSafeDate(
+                typeof existingSolvedAtRaw === 'object' &&
+                existingSolvedAtRaw !== null &&
+                'toDate' in (existingSolvedAtRaw as Record<string, unknown>) &&
+                typeof (existingSolvedAtRaw as { toDate: () => unknown }).toDate === 'function'
+                  ? (existingSolvedAtRaw as { toDate: () => unknown }).toDate()
+                  : existingSolvedAtRaw
+              );
+              const effectiveSolvedAt = solvedAt || existingSolvedAt || new Date();
+
+              await docRef.set(stripUndefined({
                 platform: name,
                 title,
                 problemUrl: problem.titleSlug
-                  ? `https://leetcode.com/problems/${problem.titleSlug}`
+                  ? `https://leetcode.com/problems/${String(problem.titleSlug)}`
                   : (problem.problemUrl || null),
                 difficulty: problem.difficulty ?? null,
                 rating: problem.rating ?? null,
-                tags: problem.tags || [],
-                solvedAt,
-                createdAt: FieldValue.serverTimestamp(),
-              }));
+                tags: Array.isArray(problem.tags) ? problem.tags : [],
+                solvedAt: effectiveSolvedAt,
+                createdAt: existingDoc.exists ? undefined : FieldValue.serverTimestamp(),
+                updatedAt: FieldValue.serverTimestamp(),
+              }), { merge: true });
+
               syncedCount++;
+            } catch (problemError) {
+              console.warn(`Skipping malformed ${name} problem during sync`, problemError);
             }
           }
 

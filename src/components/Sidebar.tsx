@@ -6,7 +6,6 @@ import {
   LayoutDashboard, 
   BarChart3, 
   Code, 
-  Trophy, 
   Users,
   Settings, 
   HelpCircle, 
@@ -31,10 +30,10 @@ const bottomNavItems = [
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const { logOut, user } = useAuth();
+  const { logOut } = useAuth();
 
   return (
-    <aside className="h-screen w-64 sticky left-0 top-0 bg-[#0a0f14] flex flex-col border-r border-[#43484e]/15">
+    <aside className="hidden md:flex w-64 h-screen fixed left-0 top-0 bg-[#0a0f14] flex-col border-r border-[#43484e]/15 z-30">
       <div className="px-6 py-8">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-linear-to-br from-[#81ecff] to-[#00e3fd] rounded-lg flex items-center justify-center">
@@ -51,7 +50,7 @@ export default function Sidebar() {
         </div>
       </div>
 
-      <nav className="flex-1 px-4 space-y-1">
+      <nav className="flex-1 px-4 flex flex-col gap-1">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.href;

@@ -551,18 +551,21 @@ export default function SettingsPage() {
                 <label className="block text-xs font-bold uppercase tracking-widest text-[#a7abb2] mb-3 px-1">
                   Select Platform
                 </label>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                   {PLATFORM_OPTIONS.map((platform) => (
                     <button
                       key={platform.name}
                       onClick={() => setNewPlatform(platform.name)}
-                      className={`p-3 rounded-xl border transition-all flex flex-col items-center gap-2 ${newPlatform === platform.name
-                        ? 'border-[#81ecff] bg-[#81ecff]/10 scale-[1.05]'
+                      className={`p-3 rounded-xl border transition-all flex flex-col items-center justify-center gap-3 text-center ${newPlatform === platform.name
+                        ? 'border-[#81ecff] bg-[#81ecff]/10 scale-[1.04]'
                         : 'border-[#43484e]/20 hover:border-[#81ecff]/40'
                         }`}
+                      style={{ minHeight: '6.5rem' }}
                     >
-                      <Trophy className="w-5 h-5" style={{ color: platform.color }} />
-                      <span className="text-[10px] font-black uppercase tracking-tighter" style={{ color: newPlatform === platform.name ? platform.color : '#a7abb2' }}>
+                      <div className="w-9 h-9 rounded-full flex items-center justify-center" style={{ backgroundColor: `${platform.color}20` }}>
+                        <Trophy className="w-4 h-4" style={{ color: platform.color }} />
+                      </div>
+                      <span className="text-[10px] font-black uppercase tracking-[0.18em] leading-tight" style={{ color: newPlatform === platform.name ? platform.color : '#a7abb2' }}>
                         {platform.displayName}
                       </span>
                     </button>

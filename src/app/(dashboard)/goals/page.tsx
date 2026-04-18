@@ -710,7 +710,7 @@ export default function GoalsPage() {
                 <label className="block text-xs font-bold uppercase tracking-widest text-[#a7abb2] mb-2">
                   Select Platform
                 </label>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                   {PLATFORM_OPTIONS.map((platform) => (
                     <button
                       key={platform.name}

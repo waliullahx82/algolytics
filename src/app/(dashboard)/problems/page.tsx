@@ -75,7 +75,7 @@ export default function ProblemsPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <div className="flex items-center justify-center min-h-100">
         <div className="flex flex-col items-center gap-4">
           <RefreshCw className="w-8 h-8 text-[#81ecff] animate-spin" />
           <p className="text-[#a7abb2]">Loading problems...</p>
@@ -129,7 +129,7 @@ export default function ProblemsPage() {
               value={searchQuery}
               onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
               placeholder="Search by problem title..."
-              className="w-full bg-[#000000] border-none rounded-lg pl-10 pr-4 py-2 text-sm text-[#eaeef5] placeholder-[#a7abb2]/40 focus:ring-1 focus:ring-[#81ecff]/50 transition-all"
+              className="w-full bg-[#000000] border border-transparent rounded-lg pl-10 pr-4 py-2 text-sm text-[#eaeef5] placeholder-[#a7abb2]/40 focus:outline-none focus:border-[#81ecff]/40 focus:ring-1 focus:ring-[#81ecff]/40 transition-all"
             />
           </div>
         </div>
@@ -314,7 +314,7 @@ export default function ProblemsPage() {
       )}
 
       {/* Floating Action Button */}
-      <button className="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-br from-[#81ecff] to-[#00e3fd] rounded-xl shadow-2xl flex items-center justify-center text-[#003840] hover:scale-110 active:scale-95 transition-all duration-200 z-50">
+      <button className="fixed bottom-8 right-8 w-14 h-14 bg-linear-to-br from-[#81ecff] to-[#00e3fd] rounded-xl shadow-2xl flex items-center justify-center text-[#003840] hover:scale-110 active:scale-95 transition-all duration-200 z-50">
         <Plus className="w-7 h-7" />
       </button>
     </div>
